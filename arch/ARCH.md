@@ -12,7 +12,7 @@
 | Language / Framework | Java · Spring Boot 3.x (Jakarta Persistence) |
 | Optional | No — core, enabled in all profiles (starter~full) |
 | Default Port | 8088 |
-| Platform Version | v1.4.0 |
+| Platform Version | v1.0.0 |
 | Deployment | 2 replicas, `ai-system` namespace, 500m CPU / 1Gi request |
 | Database | PostgreSQL@16.0 (core base), schema `admin_gov` |
 | Data Authority | NO — does NOT hold authoritative business data (that's `ai-platform-api`) |
@@ -227,10 +227,10 @@ GET /admin/tenants/{T}/resources
 | PostgreSQL | External OSS | 16.0 | PostgreSQL | core base | — (direct JPA) |
 | Kueue | External OSS | — | Apache-2.0 | full only | GpuQueuePort |
 | OpenCost | External OSS | — | Apache-2.0 | advanced+ | CostPort |
-| ai-platform-api | Internal (Java) | v1.4.0 | internal | core | ControlPlaneClient |
-| ai-dependency-resolver | Internal (Go) | v1.4.0 | internal | core | ManifestPort |
-| ai-provisioning-engine | Internal (Go) | v1.4.0 | internal | core | ProvisioningPort |
-| ai-billing-service | Internal (Java) | v1.4.0 | internal | advanced+ | CostPort |
+| ai-platform-api | Internal (Java) | v1.0.0 | internal | core | ControlPlaneClient |
+| ai-dependency-resolver | Internal (Go) | v1.0.0 | internal | core | ManifestPort |
+| ai-provisioning-engine | Internal (Go) | v1.0.0 | internal | core | ProvisioningPort |
+| ai-billing-service | Internal (Java) | v1.0.0 | internal | advanced+ | CostPort |
 | ModelRegistry | Internal/External | — | — | core | ModelRegistryPort |
 
 ---

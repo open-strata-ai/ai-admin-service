@@ -7,7 +7,7 @@
 > | Language · Framework | Java · Spring Boot 3.x (Jakarta Persistence, §15.5.1) |
 > | Domain | control-plane |
 > | optional | No (core, starter~full enabled, see `repos.yaml` / `profiles/*.yaml`) |
-> | Platform version | v1.4.0 |
+> | Platform version | v1.0.0 |
 > | Document Status | Draft |
 > | Responsible person | OpenStrata Architecture Group |
 > | Related links | [arch](./arch/ARCH.md) · [skills](./skills/SKILLS.md) · [specs](./specs/SPECS.md) · Architecture document [§14](../../OpenStrata Architecture Design Document v2.8.md) [§8](../../OpenStrata Architecture Design Document v2.8.md) [§4.7](../../OpenStrata Architecture Design Document v2.8.md) [§12](../../OpenStrata Architecture Design Document v2.8.md) [§15.5](../../OpenStrata Architecture Design Document v2.8.md) [§16](../../OpenStrata Architecture Design Document v2.8.md) |
@@ -369,10 +369,10 @@ openstrata:
 | Capsule | External OSS (MultiTenancy SPI) | capsule@1.9.0 optional | Tenant isolation carrier (§8.2) |
 | Redis / Valkey | External OSS (Cache SPI) | redis@7.4.0 ✅ / valkey@7.2.0 optional | View cache (§16.3) |
 | PostgreSQL | base base | postgresql@16.0 ✅ core | governance/auditing |
-| ai-platform-api | Internal Services | Java v1.4.0 | Domain Authority (§4.7/§8) |
-| ai-dependency-resolver | Internal services | Go v1.4.0 | Dependency graph expansion (§13.3) |
-| ai-provisioning-engine | Internal services | Go v1.4.0 | ArgoCD deployment execution (§13.3) |
-| ai-billing-service | Internal Services | Java v1.4.0 | Cost/Billing (§8.3, multi-tenant only) |
+| ai-platform-api | Internal Services | Java v1.0.0 | Domain Authority (§4.7/§8) |
+| ai-dependency-resolver | Internal services | Go v1.0.0 | Dependency graph expansion (§13.3) |
+| ai-provisioning-engine | Internal services | Go v1.0.0 | ArgoCD deployment execution (§13.3) |
+| ai-billing-service | Internal Services | Java v1.0.0 | Cost/Billing (§8.3, multi-tenant only) |
 | OpenCost | External OSS (Cost) | Reference §4.7.2 | K8s Resource Cost |
 | ModelRegistry | Internal/External | modelProviders (§4.4.5) | Model Provisioners/Authorization (§14.2) |
 | Kueue | External OSS | Reference §9.3 | GPU ClusterQueue (full only) |
@@ -400,7 +400,7 @@ openstrata:
 
 ## 14. Deployment and elasticity (K8s resources/HPA/probes)
 
-- **Deployment**: `ai-admin-service`, stateless, 2 replicas; image `openstrata/ai-admin-service:v1.4.0`.
+- **Deployment**: `ai-admin-service`, stateless, 2 replicas; image `openstrata/ai-admin-service:v1.0.0`.
 - **namespace**: shared `ai-system` (§9.2); orchestrated actions affect `ai-tenant-{x}`.
 - **Probe**:
   - liveness：`GET /actuator/health/liveness`
