@@ -226,7 +226,7 @@ GET    /api/v1/admin/audit                           #Audit queries (§14.6)
   "code": "ENTITLEMENT_DEP_VIOLATION",
   "message": "To enable billing, multitenancy must be enabled (§12.4)",
   "traceId": "beef00",
-  "doc": "https://docs.openstrata.io/errors/ENTITLEMENT_DEP_VIOLATION"
+  "doc": "https://docs.openstrata.cc/errors/ENTITLEMENT_DEP_VIOLATION"
 }
 ```
 

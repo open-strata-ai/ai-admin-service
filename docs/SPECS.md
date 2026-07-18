@@ -55,7 +55,7 @@
   "code": "ENTITLEMENT_DEP_VIOLATION",
   "message": "Enabling billing requires multitenancy to be enabled first (§12.4)",
   "traceId": "beef00",
-  "doc": "https://docs.openstrata.io/errors/ENTITLEMENT_DEP_VIOLATION"
+  "doc": "https://docs.openstrata.cc/errors/ENTITLEMENT_DEP_VIOLATION"
 }
 ```
 
