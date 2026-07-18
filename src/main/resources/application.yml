@@ -1,0 +1,47 @@
+openstrata:
+  service:
+    port: 8088
+  features:
+    admin:
+      enabled: true
+    gpu-pool:
+      enabled: false
+    multi-tenant:
+      enabled: false
+    billing-view:
+      enabled: false
+    model-registry:
+      enabled: true
+    # Single-tenant dev mode: mint a fixed tenant_id=local token, RLS still applies.
+    # Production MUST run with Keycloak (dev-mode: false).
+    dev-mode: true
+    whitelist-manifest:
+      # ADR-0005 conflict resolution strategy: REJECT (deny) or ESCALATE (arraign).
+      conflict-strategy: REJECT
+  spi:
+    auth:
+      provider: keycloak
+    multitenancy:
+      provider: capsule
+    cache:
+      provider: redis
+
+spring:
+  application:
+    name: ai-admin-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/admin_gov
+    username: admin
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: 8088
