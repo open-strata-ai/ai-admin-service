@@ -72,7 +72,7 @@ This service is the **governance orchestrator**, NOT the data authority. It disp
 | User Management | SSO/LDAP/AD integration, RBAC four roles, lifecycle sync. | §14.3 / §4.7.3 | Keycloak user/role sync via AuthPort |
 | Global Resource Management | Cluster nodes, GPU pools, shared services, global quotas, platform cost, capacity planning. | §14.4 | Runtime aggregation from Capsule/K8s/OpenCost |
 | Tenant Resource Management | Allocated vs used resources, isolation carriers, invoices (Showback/Chargeback). | §14.5 / §8.3 | Multi-source aggregation: platform-api + Capsule + billing |
-| Quota Delivery | Plan quotas → K8s ResourceQuota + Kueue ClusterQueue + gateway quotas. | §8.2 / §14.5 | GPU quota only for full profile (§8.1 D5) |
+| Quota Provisioning | Plan quotas → K8s ResourceQuota + Kueue ClusterQueue + gateway quotas. | §8.2 / §14.5 | GPU quota only for full profile (§8.1 D5) |
 | Component Scope | Tenant-allowable component whitelist → `PlatformManifest.spec`. | §12.1 / §14.2 | Must pass §12.4 dependency validation |
 | Vendor Authorization | Per-tenant third-party model grants. | §14.2 | Enterprise-only for restricted models |
 | Security & Audit | Admin MFA, least privilege, immutable audit trail. | §14.6 / §4.7.4 | Audit even when security=off |
@@ -312,6 +312,6 @@ GET /admin/tenants/{T}/resources
 
 > **References**:
 > - Full design: `design/DESIGN.md` (16 sections)
-> - Architecture framework: `../../OpenStrata架构设计文档 v2.8.md` §14, §8, §4.7, §12, §15.6, §16
+> - Architecture framework: `../../OpenStrata architecture design document v2.8.md` §14, §8, §4.7, §12, §15.5, §16
 > - Governance orchestration: §13.3 (dependency resolver → provisioning engine)
 > - Data authority separation: ADR in §16 (open question #1)
