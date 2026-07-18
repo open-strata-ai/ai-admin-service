@@ -15,19 +15,48 @@ ai-admin-service/
 ├── infrastructure/config/  #★ This repository SPI adapter local configuration fragment
 ├── Dockerfile / helm/      #Deployment artifacts
 ├── .github/                #Independent CI for each repository (build/test/scan/publish)
-├── arch/                   #★ Architectural positioning (the role/boundary of this repository in the layering)
-├── design/                 #★ Design rules + ADR (evolutionary AI coding guidelines)
-├── skills/                 #★ AI coding skills (for consumption by CodeBuddy/Cursor, etc.)
-└── specs/                  #★ Specifications and contracts (API/AgentSpec/SPI Schema)
+└── docs/                   #★ Architecture / design / skills / specs (ARCH.md, DESIGN.md, SKILLS.md, SPECS.md, adr/)
 ```
 
-## Responsibilities of this repository (TODO: completion)
+## Responsibilities of this repository
 
-Describe in 1-3 sentences: the role of this repository in the layered architecture, the **SPI ports** exposed/dependent, and the external open source components it relies on (default ✅/optional).
+Governance control-plane service for the OpenStrata admin/tenant management surface. It owns
+tenant governance state (quotas, entitlements, model allow-lists, isolation specs, orchestration
+plans, audit log) and exposes a conservative, config-gated write path to the domain authority
+(`ai-platform-api`). It implements the six governance ADRs (authority boundary, GPU-pool timing,
+orchestration SLA, cross-service audit, whitelist/manifest conflict, BOM alignment).
 
-## Local development (TODO: completion)
+**SPI ports** (9): `AuthPort`, `ControlPlaneClient`, `MultiTenancyPort`, `GpuQueuePort`,
+`ManifestPort`, `ProvisioningPort`, `CostPort`, `ModelRegistryPort`, `CachePort`. All ship with
+in-memory adapters so the service builds and tests fully offline (no Postgres / Keycloak / Kueue
+required for the verify gate).
 
-- Build/Test/Run commands
-- How to access meta repository `dependencies/` dependency graph and `profiles/` presets
+## Local development
+
+- **Build & verify (offline):** `mvn -q -B test` — runs the JUnit 5 + Mockito suite (domain rules,
+  application use-cases, and the REST controllers) with no Spring context and no external services.
+- **Run:** `mvn spring-boot:run` (profile `openstrata.dev-mode` mints a local `platform-admin`
+  tenant); the service listens on `8088`. Production wiring (Postgres, Keycloak, Kueue, Flyway
+  migration `db/migration/V1__admin_init.sql`) is enabled via the `openstrata.*` feature flags in
+  `src/main/resources/application.yml`.
+- **BOM alignment:** `bom-alignment.yaml` pins the interface versions this service expects; see
+  `BomAlignmentService`.
 
 > Evolutionary AI coding: The `docs/ (ARCH.md, DESIGN.md, SKILLS.md, SPECS.md, adr/)` of this repository is the source of truth shared by AI assistants and contributors; new decisions are recorded as ADRs in `docs/adr/`.
+
+## Code generation (2026-07-18)
+
+Generated on branch `feat/codegen-260718` (stacked on `docs/arch-design-260717`) from
+`openstrata-meta/codegen/manifests/ai-admin-service.json` + `openstrata-meta/codegen/prompts/ai-admin-service.md`.
+
+- **Layers:** `domain` (model / rule / port), `application` (6 ADR services + 9 use-cases + DTOs),
+  `infrastructure` (9 in-memory SPI adapters + JPA/Flyway persistence), `web` (REST controllers,
+  `ApiError`/`ErrorCode` envelope, `GlobalExceptionHandler`).
+- **ADRs covered:** 0001 governance authority boundary, 0002 GPU-pool timing, 0003 orchestration
+  eventually-consistent SLA, 0004 cross-service audit aggregation, 0005 whitelist/manifest conflict,
+  0006 BOM alignment.
+- **Tests:** 48 JUnit 5 cases (0 failing) — domain rules, application use-cases, and controllers,
+  all offline.
+- **JDK:** targets **Java 21** (`maven.compiler.release=21`); built & tested under the sandbox JDK 26
+  with `mockito-core 5.23.0` / `byte-buddy 1.18.10` overrides in `pom.xml`.
+

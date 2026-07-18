@@ -4,7 +4,7 @@
 > | item | value |
 > | --- | --- | --- |
 > | repo | `ai-admin-service` |
-> | Language · Framework | Java · Spring Boot 3.x (Jakarta Persistence, §15.5.1) |
+> | Language · Framework | Java 21 (JDK 21) · Spring Boot 3.3 (Jakarta Persistence, §15.5.1) |
 > | Domain | control-plane |
 > | optional | No (core, starter~full enabled, see `repos.yaml` / `profiles/*.yaml`) |
 > | Platform version | v1.0.0 |
@@ -226,7 +226,7 @@ GET    /api/v1/admin/audit                           #Audit queries (§14.6)
   "code": "ENTITLEMENT_DEP_VIOLATION",
   "message": "To enable billing, multitenancy must be enabled (§12.4)",
   "traceId": "beef00",
-  "doc": "https://docs.openstrata.io/errors/ENTITLEMENT_DEP_VIOLATION"
+  "doc": "https://docs.openstrata.cc/errors/ENTITLEMENT_DEP_VIOLATION"
 }
 ```
 
