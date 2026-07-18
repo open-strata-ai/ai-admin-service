@@ -1,6 +1,6 @@
 # ai-admin-service · AI Coding Rules & Skills (SKILLS)
 
-> **Source**: Extracted from `design/DESIGN.md` §5 (Domain Rules), §11 (Integration Points), §12 (Security & Multi-tenancy). These rules guide AI-assisted development within this repo.
+> **Source**: Extracted from `docs/DESIGN.md` §5 (Domain Rules), §11 (Integration Points), §12 (Security & Multi-tenancy). These rules guide AI-assisted development within this repo.
 
 ---
 
@@ -221,4 +221,4 @@ public class AuditEntryEntity {
 
 ---
 
-> **References**: Full domain rules in `design/DESIGN.md` §5, §11, §12. Cross-reference `ai-platform-api/skills/SKILLS.md` for shared rules (entitlement dependency, tenant isolation, audit).
+> **References**: Full domain rules in `docs/DESIGN.md` §5, §11, §12. Cross-reference `ai-platform-api/docs/SKILLS.md` for shared rules (entitlement dependency, tenant isolation, audit).

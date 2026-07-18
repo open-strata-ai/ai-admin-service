@@ -1,15 +1,15 @@
-# ADR-0004: Auditing cross-service aggregation
+# ADR-0001: Governance authority vs domain authority boundaries
 
-- **Status**: Pending Alignment
+- **Status**: Proposed
 - **Date**: 2026-07-17
 - **Suggested by**: OpenStrata Architecture Group
 - **Repository**: ai-admin-service
-- **Source**: `design/DESIGN.md` §16 Open Issue
+- **Source**: `docs/DESIGN.md` §16 Open Issue
 - **Association**: (within this repository)
 
 ##Context
 
-The management plane audit is in this service, and the business plane audit is in platform-api/each service. Whether a unified audit bus (ELK, §4.7.4 optional) is needed is to be determined.
+Admin-service orchestration and platform-api hold authoritative data, and the single writing point for "package/quota" needs to be solidified with ADR (it is recommended that platform-api be the only write, and admin-service only initiates orchestration and mirrors the view).
 
 ## Decision Options (Options Considered)
 
@@ -19,7 +19,7 @@ The management plane audit is in this service, and the business plane audit is i
 
 ## Recommended decision (Decision)
 
-This ADR solidifies "audit cross-service aggregation" into an architectural decision record and incorporates it into `design/adr/` for continuous tracking. This issue stems from the `design/DESIGN.md` §16 open issue and is still open.
+This ADR solidifies the "governance authority vs. domain authority boundary" into an architectural decision record and incorporates it into `docs/adr/` for continuous tracking. This issue stems from the `docs/DESIGN.md` §16 open issue and is still open.
 
 **Conservative Default Principle**: Before the final decision is made, the "minimum available + explicit configuration switch" shall prevail, maintain the current behavior, and not destroy the existing contract and cross-repository SPI interface; this ADR status will be written back after review by the relevant team.
 
@@ -27,10 +27,9 @@ This ADR solidifies "audit cross-service aggregation" into an architectural deci
 
 ## To be aligned / Follow-ups (Follow-ups)
 
-- Associated architecture documents §4.7.4 (as a basis for decision-making and a source of consistency verification).
 - Solidify the decision before the review at the corresponding stage, and write the final conclusion back into this ADR (the status is changed from "Pending" to "Adopted").
 
 ## Traceback
 
-- Upstream design: `design/DESIGN.md` §16 Open issue
-- Relevance index: see `design/adr/README.md`
+- Upstream design: `docs/DESIGN.md` §16 Open issue
+- Relevance index: see `docs/adr/README.md`

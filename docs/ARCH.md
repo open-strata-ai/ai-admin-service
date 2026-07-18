@@ -1,6 +1,6 @@
 # ai-admin-service · Architecture Decision Document (ARCH)
 
-> **Source**: Extracted from `design/DESIGN.md` §1, §2, §3, §6. Full design doc is the authority; this distillate captures architectural decisions, constraints, and SPI boundaries for implementers.
+> **Source**: Extracted from `docs/DESIGN.md` §1, §2, §3, §6. Full design doc is the authority; this distillate captures architectural decisions, constraints, and SPI boundaries for implementers.
 
 ---
 
@@ -311,7 +311,7 @@ GET /admin/tenants/{T}/resources
 ---
 
 > **References**:
-> - Full design: `design/DESIGN.md` (16 sections)
+> - Full design: `docs/DESIGN.md` (16 sections)
 > - Architecture framework: `../../OpenStrata architecture design document v2.8.md` §14, §8, §4.7, §12, §15.5, §16
 > - Governance orchestration: §13.3 (dependency resolver → provisioning engine)
 > - Data authority separation: ADR in §16 (open question #1)

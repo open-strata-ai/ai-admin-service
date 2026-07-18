@@ -4,7 +4,7 @@
 - **Date**: 2026-07-17
 - **Suggested by**: OpenStrata Architecture Group
 - **Repository**: ai-admin-service
-- **Source**: `design/DESIGN.md` §16 Open Issue
+- **Source**: `docs/DESIGN.md` §16 Open Issue
 - **Association**: (within this repository)
 
 ##Context
@@ -19,7 +19,7 @@ CRD/API changes for Capsule 1.9 → 2.x and Keycloak 25 → 26 need to be tracke
 
 ## Recommended decision (Decision)
 
-This ADR solidifies "BOM alignment" into an architectural decision record and incorporates it into `design/adr/` for continuous tracking. This issue stems from the `design/DESIGN.md` §16 open issue and is still open.
+This ADR solidifies "BOM alignment" into an architectural decision record and incorporates it into `docs/adr/` for continuous tracking. This issue stems from the `docs/DESIGN.md` §16 open issue and is still open.
 
 **Conservative Default Principle**: Before the final decision is made, the "minimum available + explicit configuration switch" shall prevail, maintain the current behavior, and not destroy the existing contract and cross-repository SPI interface; this ADR status will be written back after review by the relevant team.
 
@@ -60,5 +60,5 @@ This ADR solidifies "BOM alignment" into an architectural decision record and in
 
 ## Traceback
 
-- Upstream design: `design/DESIGN.md` §16 Open issue
-- Relevance index: see `design/adr/README.md`
+- Upstream design: `docs/DESIGN.md` §16 Open issue
+- Relevance index: see `docs/adr/README.md`
