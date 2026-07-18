@@ -4,7 +4,7 @@
 > | item | value |
 > | --- | --- | --- |
 > | repo | `ai-admin-service` |
-> | Language · Framework | Java · Spring Boot 3.x (Jakarta Persistence, §15.5.1) |
+> | Language · Framework | Java 21 (JDK 21) · Spring Boot 3.3 (Jakarta Persistence, §15.5.1) |
 > | Domain | control-plane |
 > | optional | No (core, starter~full enabled, see `repos.yaml` / `profiles/*.yaml`) |
 > | Platform version | v1.0.0 |
