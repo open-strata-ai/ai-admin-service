@@ -13,6 +13,7 @@ import java.util.List;
  * self-hosted inference (§8.1 D5 / §14.4 D2); non-applicable dimensions are
  * silently skipped.
  */
+@org.springframework.stereotype.Component
 public class QuotaDeploymentRule {
 
     public record QuotaDeployment(String target, String detail) {}

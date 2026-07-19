@@ -1,0 +1,64 @@
+openstrata:
+  service:
+    port: 8088
+  features:
+    admin:
+      enabled: true
+    gpu-pool:
+      enabled: false
+    multi-tenant:
+      enabled: false
+    billing-view:
+      enabled: false
+    model-registry:
+      enabled: true
+    dev-mode: true
+    whitelist-manifest:
+      conflict-strategy: REJECT
+  spi:
+    auth:
+      provider: keycloak
+    multitenancy:
+      provider: capsule
+    cache:
+      provider: redis
+
+spring:
+  application:
+    name: ai-admin-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/admin_gov
+    username: admin
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
+
+server:
+  port: 8088
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  autoconfigure:
+    exclude:  # Enable Redis in prod
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://postgres:5432/admin_gov}
+    username: ${DATABASE_USER:admin}
+    password: ${DATABASE_PASSWORD:admin}
+  data:
+    redis:
+      host: ${REDIS_HOST:redis}
+      port: ${REDIS_PORT:6379}

@@ -11,6 +11,7 @@ import java.util.Set;
  * (ai-dependency-resolver) to produce an incremental plan before provisioning.
  * Validates that all requested components appear in the resolved plan.
  */
+@org.springframework.stereotype.Component
 public class OrchestrationPlanRule {
 
     public RuleResult requireResolverPlan(Set<String> requestedComponents,

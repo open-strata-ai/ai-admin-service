@@ -8,6 +8,7 @@ import cc.openstrata.admin.domain.model.PackageTier;
  * third-party models (§14.2). Non-Enterprise requests yield
  * {@code MODEL_RESTRICTED} (403).
  */
+@org.springframework.stereotype.Component
 public class ModelWhitelistRule {
 
     public RuleResult validate(PackageTier tier, boolean restricted) {
