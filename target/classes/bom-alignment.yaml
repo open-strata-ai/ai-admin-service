@@ -1,0 +1,12 @@
+# Pinned interface_versions for ai-admin-service SPI targets.
+# Mirrors openstrata-meta/bom.yaml interface_versions (§16.1). This is the single
+# source of truth for BOM alignment (ADR-0006). bom.yaml is canonical; this copy is
+# what the running service validates against at startup / on demand.
+interface_versions:
+  keycloak: "25.0.0"      # Auth SPI (§4.7.3)
+  capsule: "1.9.0"        # MultiTenancy SPI (§8.2)
+  redis: "7.4.0"          # Cache SPI (§4.3.4)
+  valkey: "7.2.0"         # Cache SPI alternative (§16.3)
+  postgresql: "16.0"      # core base
+  kueue: "0.6.0"          # GPU ClusterQueue (full only)
+  opencost: "1.106.0"     # K8s resource cost (advanced+)
