@@ -7,10 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import org.springframework.stereotype.Repository;
 
-/** In-memory PackageTemplateRepository (H2, Batch H2). */
-@Repository
+/**
+ * In-memory {@link PackageTemplateRepository} — retained as a lightweight test
+ * double for unit tests. NOT a Spring bean: the runtime binding is the always-on
+ * {@link JpaPackageTemplateRepository} so package templates survive restarts (PA-04).
+ */
 public class InMemoryPackageTemplateRepository implements PackageTemplateRepository {
     private final Map<String, PackageTemplate> store = new ConcurrentHashMap<>();
 
