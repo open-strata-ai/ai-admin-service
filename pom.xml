@@ -37,6 +37,11 @@
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
     </dependency>
+    <!-- H2 embedded datasource for the `offline` profile (no external Postgres). -->
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+    </dependency>
     <!-- Spring Data Redis for production cache adapter -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -64,11 +69,14 @@
       <version>5.23.0</version>
       <scope>test</scope>
     </dependency>
+    <!-- byte-buddy is also required at RUNTIME by Hibernate (offline H2 profile
+         enables JPA). Scope must not be `test` or the fat jar boots with
+         NoClassDefFoundError: net/bytebuddy/... -->
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
       <version>1.18.10</version>
-      <scope>test</scope>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>

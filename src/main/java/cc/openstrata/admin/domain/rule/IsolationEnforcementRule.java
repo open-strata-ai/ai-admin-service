@@ -17,6 +17,7 @@ import java.util.List;
  * (deny-all) + per-tenant data prefix/bucket (§14.2 / §8.2). Mandatory for
  * multi-tenant tenants; builds the {@link IsolationSpec} deterministically.
  */
+@org.springframework.stereotype.Component
 public class IsolationEnforcementRule {
 
     public RuleResult enforce(IsolationSpec spec, boolean multiTenant) {

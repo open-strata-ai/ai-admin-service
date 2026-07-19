@@ -7,6 +7,7 @@ import cc.openstrata.admin.domain.RuleResult;
  * `full` profile with self-hosted inference. Otherwise it is hidden/disabled
  * (§14.4 D2). Conservative default: feature off until explicitly enabled.
  */
+@org.springframework.stereotype.Component
 public class GpuPoolEnabledRule {
 
     public RuleResult evaluate(boolean gpuPoolFeatureEnabled, boolean fullProfile,

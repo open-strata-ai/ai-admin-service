@@ -2,6 +2,7 @@ package cc.openstrata.admin.application;
 
 import cc.openstrata.admin.application.dto.CreatePackageTemplateRequest;
 import cc.openstrata.admin.application.dto.PackageTemplateResponse;
+import cc.openstrata.admin.domain.DomainException;
 import cc.openstrata.admin.domain.model.PackageTemplate;
 import cc.openstrata.admin.infrastructure.persistence.InMemoryPackageTemplateRepository;
 import java.util.List;
@@ -34,6 +35,6 @@ class PackageTemplateAppServiceTest {
 
     @Test
     void getMissingThrows() {
-        assertThrows(IllegalArgumentException.class, () -> svc.get("pt-missing"));
+        assertThrows(DomainException.class, () -> svc.get("pt-missing"));
     }
 }

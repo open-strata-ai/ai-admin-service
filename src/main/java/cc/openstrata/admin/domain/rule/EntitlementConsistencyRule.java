@@ -12,6 +12,7 @@ import java.util.Map;
  * dependency graph (§12.4). Key chain: `billing` → `multitenancy` → `auth`.
  * Any missing required component yields {@code ENTITLEMENT_DEP_VIOLATION} (422).
  */
+@org.springframework.stereotype.Component
 public class EntitlementConsistencyRule {
 
     private static final Map<String, List<String>> DEPS = Map.of(

@@ -1,8 +1,10 @@
 package cc.openstrata.admin.application;
 
 import cc.openstrata.admin.application.dto.CreatePackageTemplateRequest;
+import cc.openstrata.admin.domain.DomainException;
 import cc.openstrata.admin.domain.model.PackageTemplate;
 import cc.openstrata.admin.domain.port.PackageTemplateRepository;
+import cc.openstrata.admin.web.ErrorCode;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,8 @@ public class PackageTemplateAppService {
 
     public PackageTemplate get(String id) {
         return repository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("package template not found: " + id));
+            .orElseThrow(() -> new DomainException(ErrorCode.PACKAGE_TEMPLATE_NOT_FOUND,
+                "package template not found: " + id));
     }
 
     public List<PackageTemplate> list() {
