@@ -22,6 +22,7 @@ public enum ErrorCode {
     BAD_REQUEST(400),
     UNAUTHORIZED(401),
     FORBIDDEN(403),
+    PACKAGE_TEMPLATE_NOT_FOUND(404),
     INTERNAL(500);
 
     private final int httpStatus;

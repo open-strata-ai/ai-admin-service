@@ -1,0 +1,17 @@
+/Users/weiping/Code/openstrata/ai-admin-service/src/test/java/cc/openstrata/admin/application/AuditAggregationServiceTest.java
+/Users/weiping/Code/openstrata/ai-admin-service/src/test/java/cc/openstrata/admin/application/BomAlignmentServiceTest.java
+/Users/weiping/Code/openstrata/ai-admin-service/src/test/java/cc/openstrata/admin/application/EntitlementGovAppServiceTest.java
+/Users/weiping/Code/openstrata/ai-admin-service/src/test/java/cc/openstrata/admin/application/GovernanceAuthorityServiceTest.java
+/Users/weiping/Code/openstrata/ai-admin-service/src/test/java/cc/openstrata/admin/application/OrchestrationConsensusServiceTest.java
+/Users/weiping/Code/openstrata/ai-admin-service/src/test/java/cc/openstrata/admin/application/ProvisioningAppServiceTest.java
+/Users/weiping/Code/openstrata/ai-admin-service/src/test/java/cc/openstrata/admin/application/TenantGovAppServiceTest.java
+/Users/weiping/Code/openstrata/ai-admin-service/src/test/java/cc/openstrata/admin/application/WhitelistManifestServiceTest.java
+/Users/weiping/Code/openstrata/ai-admin-service/src/test/java/cc/openstrata/admin/domain/rule/AdminMinPrivilegeRuleTest.java
+/Users/weiping/Code/openstrata/ai-admin-service/src/test/java/cc/openstrata/admin/domain/rule/EntitlementConsistencyRuleTest.java
+/Users/weiping/Code/openstrata/ai-admin-service/src/test/java/cc/openstrata/admin/domain/rule/GpuPoolEnabledRuleTest.java
+/Users/weiping/Code/openstrata/ai-admin-service/src/test/java/cc/openstrata/admin/domain/rule/IsolationEnforcementRuleTest.java
+/Users/weiping/Code/openstrata/ai-admin-service/src/test/java/cc/openstrata/admin/domain/rule/ModelWhitelistRuleTest.java
+/Users/weiping/Code/openstrata/ai-admin-service/src/test/java/cc/openstrata/admin/domain/rule/OrchestrationPlanRuleTest.java
+/Users/weiping/Code/openstrata/ai-admin-service/src/test/java/cc/openstrata/admin/domain/rule/QuotaDeploymentRuleTest.java
+/Users/weiping/Code/openstrata/ai-admin-service/src/test/java/cc/openstrata/admin/infrastructure/adapter/RedisCacheAdapterTest.java
+/Users/weiping/Code/openstrata/ai-admin-service/src/test/java/cc/openstrata/admin/web/AdminTenantControllerTest.java

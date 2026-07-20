@@ -12,11 +12,8 @@ openstrata:
       enabled: false
     model-registry:
       enabled: true
-    # Single-tenant dev mode: mint a fixed tenant_id=local token, RLS still applies.
-    # Production MUST run with Keycloak (dev-mode: false).
     dev-mode: true
     whitelist-manifest:
-      # ADR-0005 conflict resolution strategy: REJECT (deny) or ESCALATE (arraign).
       conflict-strategy: REJECT
   spi:
     auth:
@@ -42,6 +39,51 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
 
 server:
   port: 8088
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  autoconfigure:
+    exclude:  # Enable Redis in prod
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://postgres:5432/admin_gov}
+    username: ${DATABASE_USER:admin}
+    password: ${DATABASE_PASSWORD:admin}
+  data:
+    redis:
+      host: ${REDIS_HOST:redis}
+      port: ${REDIS_PORT:6379}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: offline
+  # Offline profile: boot with an embedded H2 datasource so the service runs
+  # with no external Postgres/Redis (used by openstrata-e2e-test smoke harness).
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
+  datasource:
+    url: jdbc:h2:mem:admin_gov;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  flyway:
+    enabled: false

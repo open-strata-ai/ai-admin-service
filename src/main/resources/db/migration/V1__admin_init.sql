@@ -20,6 +20,16 @@ CREATE TABLE IF NOT EXISTS provisioning_plans (
   created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+-- Reusable package templates (PA-04). components stored as JSON text (portable
+-- across Postgres/H2); production may switch to JSONB without code changes.
+CREATE TABLE IF NOT EXISTS package_templates (
+  id            VARCHAR(96) PRIMARY KEY,
+  name          VARCHAR(128) NOT NULL,
+  tier          VARCHAR(32)  NOT NULL,
+  components    TEXT         NOT NULL,
+  quota_policy  TEXT
+);
+
 -- Immutable, INSERT-ONLY audit trail (§14.6 / §4.7.4)
 CREATE TABLE IF NOT EXISTS audit_log (
   id          BIGSERIAL PRIMARY KEY,

@@ -1,0 +1,17 @@
+cc/openstrata/admin/application/BomAlignmentServiceTest.class
+cc/openstrata/admin/domain/rule/OrchestrationPlanRuleTest.class
+cc/openstrata/admin/domain/rule/AdminMinPrivilegeRuleTest.class
+cc/openstrata/admin/web/AdminTenantControllerTest.class
+cc/openstrata/admin/application/EntitlementGovAppServiceTest.class
+cc/openstrata/admin/domain/rule/QuotaDeploymentRuleTest.class
+cc/openstrata/admin/application/TenantGovAppServiceTest.class
+cc/openstrata/admin/domain/rule/EntitlementConsistencyRuleTest.class
+cc/openstrata/admin/application/WhitelistManifestServiceTest.class
+cc/openstrata/admin/domain/rule/ModelWhitelistRuleTest.class
+cc/openstrata/admin/domain/rule/GpuPoolEnabledRuleTest.class
+cc/openstrata/admin/application/ProvisioningAppServiceTest.class
+cc/openstrata/admin/application/OrchestrationConsensusServiceTest.class
+cc/openstrata/admin/application/GovernanceAuthorityServiceTest.class
+cc/openstrata/admin/infrastructure/adapter/RedisCacheAdapterTest.class
+cc/openstrata/admin/domain/rule/IsolationEnforcementRuleTest.class
+cc/openstrata/admin/application/AuditAggregationServiceTest.class

@@ -7,6 +7,7 @@ import cc.openstrata.admin.domain.RuleResult;
  * (§14.3). A tenant admin cannot operate on another tenant's data without an
  * explicit scope; platform admins may act across tenants.
  */
+@org.springframework.stereotype.Component
 public class AdminMinPrivilegeRule {
 
     public RuleResult enforce(String actorTenantId, String targetTenantId,

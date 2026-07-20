@@ -3,10 +3,12 @@ package cc.openstrata.admin.infrastructure.adapter;
 import cc.openstrata.admin.domain.port.CachePort;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-/** In-memory CachePort standing in for Redis/Valkey (resource view cache). */
+/** In-memory CachePort standing in for Redis/Valkey (resource view cache). Offline default. */
 @Component
+@Profile("!prod")
 public class InMemoryCacheAdapter implements CachePort {
 
     private final Map<String, Object> store = new ConcurrentHashMap<>();
