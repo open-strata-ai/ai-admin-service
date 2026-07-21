@@ -85,6 +85,21 @@ public class GovernanceAuthorityService {
             .toList();
     }
 
+    /** RC-9 (minimal CRUD): full governance listing (real plan/status). */
+    public List<TenantGovernance> findAll() {
+        return repository.findAll().stream()
+            .map(TenantGovernanceMapper::toDomain)
+            .toList();
+    }
+
+    /** RC-9 (minimal CRUD): delete a tenant's locally-mirrored governance. */
+    public void deleteTenant(TenantId tenantId) {
+        controlPlaneClient.deleteTenant(tenantId);
+        repository.deleteById(tenantId.value());
+        auditRecorder.record(actor(), cc.openstrata.admin.domain.model.AuditScope.PLATFORM,
+            tenantId.value(), "TENANT_DELETED", java.util.Map.of());
+    }
+
     private String actor() {
         String t = TenantContext.tenantId();
         return t == null ? "system" : t;

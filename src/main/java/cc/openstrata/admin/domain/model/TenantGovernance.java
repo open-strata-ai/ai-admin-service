@@ -1,5 +1,6 @@
 package cc.openstrata.admin.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import java.util.Objects;
 
 /**
@@ -27,6 +28,14 @@ public class TenantGovernance {
 
     public TenantId tenantId() { return tenantId; }
     public PackageTier packageTier() { return packageTier; }
+
+    /** RC-10: expose the real tenant id + package tier to the admin portal so the
+     *  registry shows genuine plan data instead of fabricated defaults. */
+    @JsonGetter("id")
+    public String tenantIdValue() { return tenantId.value(); }
+
+    @JsonGetter("packageTier")
+    public String packageTierName() { return packageTier == null ? null : packageTier.name(); }
     public QuotaPolicy quotaPolicy() { return quotaPolicy; }
     public EntitlementSet entitlements() { return entitlements; }
     public ModelWhitelist modelWhitelist() { return modelWhitelist; }

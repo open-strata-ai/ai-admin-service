@@ -13,11 +13,15 @@ import cc.openstrata.admin.application.dto.ModelGrantRequest;
 import cc.openstrata.admin.application.dto.QuotaRequest;
 import cc.openstrata.admin.application.dto.TenantPatchRequest;
 import cc.openstrata.admin.application.dto.TenantResourceResponse;
+import cc.openstrata.admin.config.TenantContext;
+import cc.openstrata.admin.domain.DomainException;
 import cc.openstrata.admin.domain.model.ProvisioningPlan;
 import cc.openstrata.admin.domain.model.TenantGovernance;
+import cc.openstrata.admin.web.ErrorCode;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,13 +54,21 @@ public class AdminTenantController {
     }
 
     @GetMapping("/tenants")
-    public List<String> listTenants() {
-        return tenantGov.list();
+    public List<TenantGovernance> listTenants() {
+        return tenantGov.listDetails();
     }
 
     @PostMapping("/tenants")
     public TenantGovernance createTenant(@Valid @RequestBody CreateTenantRequest req) {
+        requirePlatformAdmin();
         return tenantGov.create(req);
+    }
+
+    @DeleteMapping("/tenants/{tenantId}")
+    public ResponseEntity<Void> deleteTenant(@PathVariable String tenantId) {
+        requirePlatformAdmin();
+        tenantGov.delete(tenantId);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/tenants/{tenantId}")
@@ -67,6 +79,7 @@ public class AdminTenantController {
     @PatchMapping("/tenants/{tenantId}")
     public ResponseEntity<Void> patchTenant(@PathVariable String tenantId,
                                             @Valid @RequestBody TenantPatchRequest req) {
+        requirePlatformAdmin();
         if (req.isSuspend()) {
             tenantGov.suspend(tenantId);
         } else if (req.isResume()) {
@@ -104,5 +117,15 @@ public class AdminTenantController {
     public ProvisioningPlan applyComponents(@PathVariable String tenantId,
                                            @Valid @RequestBody ComponentApplyRequest req) {
         return provisioning.apply(tenantId, req);
+    }
+
+    /** RC-11: tenant governance writes require the platform-admin role. In
+     *  dev-mode the interceptor already resolves platform-admin, so local flows
+     *  pass; non-dev requests without the role are rejected with 403. */
+    private void requirePlatformAdmin() {
+        if (!TenantContext.isPlatformAdmin()) {
+            throw new DomainException(ErrorCode.FORBIDDEN,
+                "platform-admin role required for tenant governance writes");
+        }
     }
 }

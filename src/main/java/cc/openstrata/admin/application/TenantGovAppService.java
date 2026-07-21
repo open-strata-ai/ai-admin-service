@@ -57,4 +57,15 @@ public class TenantGovAppService {
     public List<String> list() {
         return governance.findAllIds();
     }
+
+    /** RC-9 (minimal CRUD): full tenant governance listing for the registry view. */
+    public List<TenantGovernance> listDetails() {
+        return governance.findAll();
+    }
+
+    /** RC-9 (minimal CRUD): delete a tenant's governance mirror and notify the
+     *  control plane. */
+    public void delete(String tenantId) {
+        governance.deleteTenant(new TenantId(tenantId));
+    }
 }
