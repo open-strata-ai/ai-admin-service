@@ -7,9 +7,11 @@ import cc.openstrata.admin.domain.model.IsolationSpec;
 import cc.openstrata.admin.domain.model.ModelWhitelist;
 import cc.openstrata.admin.domain.model.PackageTier;
 import cc.openstrata.admin.domain.model.QuotaPolicy;
+import cc.openstrata.admin.domain.model.ResourceQuota;
 import cc.openstrata.admin.domain.model.TenantGovernance;
 import cc.openstrata.admin.domain.model.TenantId;
 import java.time.Instant;
+import java.util.Set;
 
 /**
  * Maps between the {@link TenantGovernance} domain aggregate and its JPA entity.
@@ -20,6 +22,15 @@ public final class TenantGovernanceMapper {
 
     private static final ObjectMapper M = new ObjectMapper();
 
+    /** Empty defaults so an optional governance field never serializes to NULL
+     *  (the DB columns are NOT NULL and Hibernate's `update` won't relax them on
+     *  an already-created table). RC-9: a freshly created tenant has no quota /
+     *  entitlements / whitelist yet, so persist empty, valid JSON instead. */
+    private static final QuotaPolicy DEFAULT_QUOTA =
+        new QuotaPolicy(PackageTier.STANDARD, new ResourceQuota(0, 0, 0, 0, 0, 0), false);
+    private static final EntitlementSet DEFAULT_ENTITLEMENTS = new EntitlementSet(Set.of());
+    private static final ModelWhitelist DEFAULT_WHITELIST = new ModelWhitelist(Set.of(), false);
+
     private TenantGovernanceMapper() {}
 
     public static TenantGovernanceEntity toEntity(TenantGovernance g) {
@@ -27,9 +38,9 @@ public final class TenantGovernanceMapper {
         e.setTenantId(g.tenantId().value());
         e.setPkg(g.packageTier().name());
         try {
-            if (g.quotaPolicy() != null) e.setQuotaPolicy(M.writeValueAsString(g.quotaPolicy()));
-            if (g.entitlements() != null) e.setEntitlements(M.writeValueAsString(g.entitlements()));
-            if (g.modelWhitelist() != null) e.setModelWhitelist(M.writeValueAsString(g.modelWhitelist()));
+            e.setQuotaPolicy(M.writeValueAsString(g.quotaPolicy() != null ? g.quotaPolicy() : DEFAULT_QUOTA));
+            e.setEntitlements(M.writeValueAsString(g.entitlements() != null ? g.entitlements() : DEFAULT_ENTITLEMENTS));
+            e.setModelWhitelist(M.writeValueAsString(g.modelWhitelist() != null ? g.modelWhitelist() : DEFAULT_WHITELIST));
             if (g.isolationSpec() != null) e.setIsolationSpec(M.writeValueAsString(g.isolationSpec()));
         } catch (JsonProcessingException ex) {
             throw new IllegalStateException("Failed to serialize governance state", ex);

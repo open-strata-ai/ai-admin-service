@@ -26,6 +26,11 @@ public class InMemoryControlPlaneClient implements ControlPlaneClient {
     }
 
     @Override
+    public void deleteTenant(TenantId tenantId) {
+        tenants.remove(tenantId.value());
+    }
+
+    @Override
     public void updatePackage(TenantId tenantId, PackageTier tier) {
         tenants.put(tenantId.value(), tier);
     }

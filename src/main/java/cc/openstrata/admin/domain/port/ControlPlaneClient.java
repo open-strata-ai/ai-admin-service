@@ -13,6 +13,7 @@ import cc.openstrata.admin.domain.model.TenantId;
 public interface ControlPlaneClient {
 
     void createTenant(TenantId tenantId, PackageTier tier);
+    void deleteTenant(TenantId tenantId);
     void updatePackage(TenantId tenantId, PackageTier tier);
     void updateQuota(TenantId tenantId, ResourceQuota quota);
     void setEntitlements(TenantId tenantId, EntitlementSet entitlements);
