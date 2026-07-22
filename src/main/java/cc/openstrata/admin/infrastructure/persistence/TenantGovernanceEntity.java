@@ -22,13 +22,13 @@ public class TenantGovernanceEntity {
     @Column(nullable = false)
     private String pkg;
 
-    @Column(name = "quota_policy", columnDefinition = "TEXT", nullable = false)
+    @Column(name = "quota_policy", columnDefinition = "TEXT")
     private String quotaPolicy;
 
-    @Column(name = "entitlements", columnDefinition = "TEXT", nullable = false)
+    @Column(name = "entitlements", columnDefinition = "TEXT")
     private String entitlements;
 
-    @Column(name = "model_whitelist", columnDefinition = "TEXT", nullable = false)
+    @Column(name = "model_whitelist", columnDefinition = "TEXT")
     private String modelWhitelist;
 
     @Column(name = "isolation_spec", columnDefinition = "TEXT")
