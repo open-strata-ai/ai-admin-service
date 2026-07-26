@@ -58,11 +58,36 @@ public class OpenstrataProperties {
         private String authProvider = "keycloak";
         private String multiTenancyProvider = "capsule";
         private String cacheProvider = "redis";
+        /** Secret storage backend. No shipped default exists, so per the M1
+         *  decision the default is HashiCorp Vault; set to `inmemory` for local
+         *  dev / offline runs that have no Vault reachable. */
+        private String secretProvider = "vault";
+        private final Vault vault = new Vault();
+
         public String getAuthProvider() { return authProvider; }
         public void setAuthProvider(String v) { this.authProvider = v; }
         public String getMultiTenancyProvider() { return multiTenancyProvider; }
         public void setMultiTenancyProvider(String v) { this.multiTenancyProvider = v; }
         public String getCacheProvider() { return cacheProvider; }
         public void setCacheProvider(String v) { this.cacheProvider = v; }
+        public String getSecretProvider() { return secretProvider; }
+        public void setSecretProvider(String v) { this.secretProvider = v; }
+        public Vault getVault() { return vault; }
+    }
+
+    public static class Vault {
+        private String url = "http://localhost:8200";
+        private String token = "";
+        private String mount = "secret";
+        private String prefix = "openstrata/providers";
+
+        public String getUrl() { return url; }
+        public void setUrl(String v) { this.url = v; }
+        public String getToken() { return token; }
+        public void setToken(String v) { this.token = v; }
+        public String getMount() { return mount; }
+        public void setMount(String v) { this.mount = v; }
+        public String getPrefix() { return prefix; }
+        public void setPrefix(String v) { this.prefix = v; }
     }
 }

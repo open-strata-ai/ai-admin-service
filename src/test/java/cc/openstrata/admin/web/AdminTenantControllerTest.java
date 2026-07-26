@@ -49,8 +49,11 @@ class AdminTenantControllerTest {
 
     @Test
     void listTenantsDelegates() {
-        when(tenantGov.list()).thenReturn(List.of("t1", "t2"));
-        assertEquals(List.of("t1", "t2"), controller.listTenants());
+        when(tenantGov.listDetails()).thenReturn(List.of(
+            new TenantGovernance(new TenantId("t1"), PackageTier.STANDARD),
+            new TenantGovernance(new TenantId("t2"), PackageTier.STANDARD)));
+        assertEquals(2, controller.listTenants().size());
+        verify(tenantGov).listDetails();
     }
 
     @Test

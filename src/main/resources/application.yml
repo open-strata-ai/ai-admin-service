@@ -87,3 +87,7 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
   flyway:
     enabled: false
+  # Offline / e2e: no Vault reachable — use the in-memory secret store.
+  openstrata:
+    spi:
+      secret-provider: inmemory
