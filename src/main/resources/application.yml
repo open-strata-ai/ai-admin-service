@@ -28,8 +28,10 @@ spring:
     name: ai-admin-service
   datasource:
     url: jdbc:postgresql://localhost:5432/admin_gov
-    username: admin
-    password: admin
+    # Non-superuser role: required so PostgreSQL RLS (V4__rls_tenant_isolation.sql)
+    # is enforced on the application connection (superusers bypass RLS).
+    username: admin_app
+    password: admin_app
   jpa:
     hibernate:
       ddl-auto: none
@@ -56,8 +58,8 @@ spring:
     exclude:  # Enable Redis in prod
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://postgres:5432/admin_gov}
-    username: ${DATABASE_USER:admin}
-    password: ${DATABASE_PASSWORD:admin}
+    username: ${DATABASE_USER:admin_app}
+    password: ${DATABASE_PASSWORD:admin_app}
   data:
     redis:
       host: ${REDIS_HOST:redis}

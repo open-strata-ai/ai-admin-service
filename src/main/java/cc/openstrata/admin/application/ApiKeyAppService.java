@@ -3,6 +3,7 @@ package cc.openstrata.admin.application;
 import cc.openstrata.admin.application.dto.ApiKeyGenerated;
 import cc.openstrata.admin.application.dto.ApiKeyView;
 import cc.openstrata.admin.application.dto.CreateApiKeyRequest;
+import cc.openstrata.admin.config.TenantContext;
 import cc.openstrata.admin.domain.DomainException;
 import cc.openstrata.admin.domain.model.AuditScope;
 import cc.openstrata.admin.infrastructure.persistence.ApiKeyEntity;
@@ -35,6 +36,7 @@ public class ApiKeyAppService {
     }
 
     public ApiKeyGenerated create(CreateApiKeyRequest req) {
+        enforceWriteTenant(req.tenantId());
         String plain = generatePlaintext();
         ApiKeyEntity e = new ApiKeyEntity();
         e.setId("key-" + UUID.randomUUID().toString().substring(0, 8));
@@ -55,7 +57,10 @@ public class ApiKeyAppService {
     }
 
     public List<ApiKeyView> list() {
-        return repo.findAll().stream().map(this::toView).toList();
+        if (TenantContext.isPlatformAdmin()) {
+            return repo.findAll().stream().map(this::toView).toList();
+        }
+        return repo.findByTenantId(TenantContext.tenantId()).stream().map(this::toView).toList();
     }
 
     public List<ApiKeyView> listByTenant(String tenantId) {
@@ -63,11 +68,11 @@ public class ApiKeyAppService {
     }
 
     public ApiKeyView get(String id) {
-        return toView(require(id));
+        return toView(requireOwned(id));
     }
 
     public void revoke(String id) {
-        ApiKeyEntity e = require(id);
+        ApiKeyEntity e = requireOwned(id);
         e.setStatus("REVOKED");
         e.setUpdatedAt(Instant.now());
         repo.save(e);
@@ -96,6 +101,38 @@ public class ApiKeyAppService {
     private ApiKeyEntity require(String id) {
         return repo.findById(id).orElseThrow(() -> new DomainException(
             ErrorCode.API_KEY_NOT_FOUND, "api key not found: " + id));
+    }
+
+    private ApiKeyEntity requireOwned(String id) {
+        ApiKeyEntity e = require(id);
+        enforceTenantScope(e.getTenantId());
+        return e;
+    }
+
+    /** Enforces that a non-platform-admin actor may only read/write resources
+     *  that belong to their own tenant. Platform-admins are exempt. */
+    private void enforceTenantScope(String resourceTenant) {
+        if (TenantContext.isPlatformAdmin()) {
+            return;
+        }
+        String current = TenantContext.tenantId();
+        if (current == null || !current.equals(resourceTenant)) {
+            throw new DomainException(ErrorCode.FORBIDDEN,
+                "resource belongs to a different tenant");
+        }
+    }
+
+    /** Enforces that a non-platform-admin actor may only create/revoke resources
+     *  for their own tenant (prevents cross-tenant write escalation). */
+    private void enforceWriteTenant(String requestedTenant) {
+        if (TenantContext.isPlatformAdmin()) {
+            return;
+        }
+        String current = TenantContext.tenantId();
+        if (current == null || !current.equals(requestedTenant)) {
+            throw new DomainException(ErrorCode.FORBIDDEN,
+                "cannot write resources for a different tenant");
+        }
     }
 
     private ApiKeyView toView(ApiKeyEntity e) {

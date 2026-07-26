@@ -2,6 +2,7 @@ package cc.openstrata.admin.application;
 
 import cc.openstrata.admin.application.dto.UpsertUserRequest;
 import cc.openstrata.admin.application.dto.UserView;
+import cc.openstrata.admin.config.TenantContext;
 import cc.openstrata.admin.domain.DomainException;
 import cc.openstrata.admin.domain.model.AuditScope;
 import cc.openstrata.admin.infrastructure.persistence.PlatformUserEntity;
@@ -33,6 +34,7 @@ public class UserAppService {
     }
 
     public UserView create(UpsertUserRequest req) {
+        enforceWriteTenant(req.tenantId());
         List<String> roles = normalizeRoles(req.roles());
         PlatformUserEntity e = new PlatformUserEntity();
         e.setId("usr-" + UUID.randomUUID().toString().substring(0, 8));
@@ -46,7 +48,8 @@ public class UserAppService {
     }
 
     public UserView update(String id, UpsertUserRequest req) {
-        PlatformUserEntity e = require(id);
+        PlatformUserEntity e = requireOwned(id);
+        enforceWriteTenant(req.tenantId());
         List<String> roles = normalizeRoles(req.roles());
         map(e, req, roles);
         e.setUpdatedAt(Instant.now());
@@ -57,7 +60,10 @@ public class UserAppService {
     }
 
     public List<UserView> list() {
-        return repo.findAll().stream().map(this::toView).toList();
+        if (TenantContext.isPlatformAdmin()) {
+            return repo.findAll().stream().map(this::toView).toList();
+        }
+        return repo.findByTenantId(TenantContext.tenantId()).stream().map(this::toView).toList();
     }
 
     public List<UserView> listByTenant(String tenantId) {
@@ -65,11 +71,11 @@ public class UserAppService {
     }
 
     public UserView get(String id) {
-        return toView(require(id));
+        return toView(requireOwned(id));
     }
 
     public void delete(String id) {
-        PlatformUserEntity e = require(id);
+        PlatformUserEntity e = requireOwned(id);
         repo.deleteById(id);
         audit.record(Actors.current(), AuditScope.PLATFORM, e.getTenantId(), "USER_DELETED",
             Map.of("id", id));
@@ -99,6 +105,38 @@ public class UserAppService {
     private PlatformUserEntity require(String id) {
         return repo.findById(id).orElseThrow(() -> new DomainException(
             ErrorCode.USER_NOT_FOUND, "user not found: " + id));
+    }
+
+    private PlatformUserEntity requireOwned(String id) {
+        PlatformUserEntity e = require(id);
+        enforceTenantScope(e.getTenantId());
+        return e;
+    }
+
+    /** Enforces that a non-platform-admin actor may only read/write resources
+     *  that belong to their own tenant. Platform-admins are exempt. */
+    private void enforceTenantScope(String resourceTenant) {
+        if (TenantContext.isPlatformAdmin()) {
+            return;
+        }
+        String current = TenantContext.tenantId();
+        if (current == null || !current.equals(resourceTenant)) {
+            throw new DomainException(ErrorCode.FORBIDDEN,
+                "resource belongs to a different tenant");
+        }
+    }
+
+    /** Enforces that a non-platform-admin actor may only create/update resources
+     *  for their own tenant (prevents cross-tenant write escalation). */
+    private void enforceWriteTenant(String requestedTenant) {
+        if (TenantContext.isPlatformAdmin()) {
+            return;
+        }
+        String current = TenantContext.tenantId();
+        if (current == null || !current.equals(requestedTenant)) {
+            throw new DomainException(ErrorCode.FORBIDDEN,
+                "cannot write resources for a different tenant");
+        }
     }
 
     private UserView toView(PlatformUserEntity e) {
