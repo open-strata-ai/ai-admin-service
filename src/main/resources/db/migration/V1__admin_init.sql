@@ -1,43 +1,47 @@
 -- ai-admin-service governance orchestration schema (schema: admin_gov)
 -- NOTE: governance state is serialized as JSON text (portable across Postgres/H2).
 -- Production may switch TEXT columns to JSONB without code changes.
+-- Column names/types mirror the JPA entities in
+-- cc.openstrata.admin.infrastructure.persistence. The governance row uses `pkg`
+-- (not `package`) to match TenantGovernanceEntity; this baseline was corrected
+-- when Flyway (flyway-core) became the schema source of truth (V5 follow-up).
 
 CREATE TABLE IF NOT EXISTS tenant_governance (
-  tenant_id        VARCHAR(64) PRIMARY KEY,
-  package          VARCHAR(32) NOT NULL,
-  quota_policy     TEXT        NOT NULL,
-  entitlements     TEXT        NOT NULL,
-  model_whitelist  TEXT        NOT NULL,
-  isolation_spec   TEXT,
-  updated_at       TIMESTAMPTZ NOT NULL DEFAULT now()
+  tenant_id      VARCHAR(64)  PRIMARY KEY,
+  pkg            VARCHAR(64)  NOT NULL,
+  quota_policy   TEXT,
+  entitlements   TEXT,
+  model_whitelist TEXT,
+  isolation_spec TEXT,
+  updated_at     TIMESTAMPTZ  NOT NULL DEFAULT now()
 );
 
 CREATE TABLE IF NOT EXISTS provisioning_plans (
-  plan_id     VARCHAR(64) PRIMARY KEY,
-  tenant_id   VARCHAR(64) NOT NULL,
-  manifest    TEXT        NOT NULL,
-  status      VARCHAR(16) NOT NULL DEFAULT 'PENDING',
-  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+  plan_id     VARCHAR(64)  PRIMARY KEY,
+  tenant_id   VARCHAR(64)  NOT NULL,
+  manifest    TEXT         NOT NULL,
+  status      VARCHAR(32)  NOT NULL,
+  created_at  TIMESTAMPTZ  NOT NULL DEFAULT now()
 );
 
 -- Reusable package templates (PA-04). components stored as JSON text (portable
 -- across Postgres/H2); production may switch to JSONB without code changes.
 CREATE TABLE IF NOT EXISTS package_templates (
-  id            VARCHAR(96) PRIMARY KEY,
-  name          VARCHAR(128) NOT NULL,
-  tier          VARCHAR(32)  NOT NULL,
+  id            VARCHAR(64)  PRIMARY KEY,
+  name          VARCHAR(255) NOT NULL,
+  tier          VARCHAR(64)  NOT NULL,
   components    TEXT         NOT NULL,
   quota_policy  TEXT
 );
 
 -- Immutable, INSERT-ONLY audit trail (§14.6 / §4.7.4)
 CREATE TABLE IF NOT EXISTS audit_log (
-  id          BIGSERIAL PRIMARY KEY,
-  actor       VARCHAR(64) NOT NULL,
-  scope       VARCHAR(8)  NOT NULL,
+  id          BIGSERIAL    PRIMARY KEY,
+  actor       VARCHAR(255) NOT NULL,
+  scope       VARCHAR(64)  NOT NULL,
   tenant_id   VARCHAR(64),
-  action      VARCHAR(64) NOT NULL,
+  action      VARCHAR(255) NOT NULL,
   payload     TEXT,
-  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+  created_at  TIMESTAMPTZ  NOT NULL DEFAULT now()
 );
 CREATE INDEX IF NOT EXISTS idx_audit_tenant ON audit_log(tenant_id, created_at);
