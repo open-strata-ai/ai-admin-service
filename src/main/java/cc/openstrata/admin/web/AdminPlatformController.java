@@ -47,7 +47,7 @@ public class AdminPlatformController {
         return gpuPool.view(0);
     }
 
-    @GetMapping("/users")
+    @GetMapping("/users:gov")
     public Set<String> users(@RequestParam String tenantId) {
         return userGov.list(tenantId);
     }
